@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
-const knnPredict = require("../models/tanaman/knn-predict.js");
+const knnPredict = require("./models/tanaman/knn-predict.js");
 
 app.use(express.static("public"));
 
