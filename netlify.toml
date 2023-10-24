@@ -1,0 +1,8 @@
+[build]
+  command = "node app"
+  publish = "public"
+
+[[redirects]]
+  from = "/*"
+  to = "/app.js"
+  status = 200
