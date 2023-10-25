@@ -15,7 +15,8 @@ app.get("/weather", (req, res) => {
   const timestep = req.query.timestep || 14;
   res.json({
     timestep,
-    model: `https://simpanan.tech/model_t/timestep-${timestep}/model.json`,
+
+    model: `https://greenjs.netlify.app/api/models/timestep-${timestep}/model.json`,
   });
 });
 
