@@ -12,11 +12,10 @@ app.use((req, res, next) => {
 });
 
 app.get("/weather", (req, res) => {
-  const timestep = req.query.timestep || 14;
+  const timestep = req.query.timestep || 30;
   res.json({
     timestep,
-
-    model: `https://greenjs.netlify.app/api/models/timestep-${timestep}/model.json`,
+    model: `https://greenjs.netlify.app/api/models/lstm/timestep-${timestep}/model.json`,
   });
 });
 
