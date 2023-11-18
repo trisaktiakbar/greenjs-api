@@ -46,6 +46,10 @@ app.get("/plant", (req, res) => {
   });
 });
 
+app.use(function (req, res, next) {
+  res.status(404).send("404 Not Found");
+});
+
 app.listen(3000, () => {
   console.log("Server berjalan di port 3000");
 });
