@@ -22,17 +22,20 @@ app.get("/weather", (req, res) => {
 
 app.get("/plant", (req, res) => {
   const filePath = "models/tanaman/knn-data.json";
+  data = req.query.data;
+  if (!data) {
+    return res.status(400).send("Bad Request: Query parameter data is missing");
+  }
+  data = JSON.parse(data);
+
   fs.readFile(filePath, "utf8", (err, result) => {
     if (err) {
       console.error(err);
-      res.status(500).send("Terjadi kesalahan dalam membaca file JSON.");
+      res.status(500).send("Terjadi kesalahan dari sisi server.");
     } else {
       result = JSON.parse(result);
       let X_train = result.input_feature;
       let Y_train = result.target;
-
-      let data = req.query.data;
-      data = JSON.parse(data);
 
       let input = [];
       input[0] = data.suhu; // suhu
