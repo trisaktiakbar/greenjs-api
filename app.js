@@ -44,7 +44,7 @@ app.get("/plant", (req, res) => {
       input[3] = data.curah_hujan; // Curah Hujan
 
       const predictedLabel = knnPredict(X_train, Y_train, input);
-      res.json({
+      res.status(200).json({
         rekomendasi_tanaman: predictedLabel,
       });
     }
