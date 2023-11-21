@@ -15,7 +15,7 @@ app.get("/weather", (req, res) => {
   const feature = req.query.feature;
   res.json({
     feature,
-    model: `https://greenjs.netlify.app/api/models/lstm/${feature}/model.json`,
+    model: `https://greenjs.netlify.app/api/models/lstm/timestep-30/${feature}/model.json`,
   });
 });
 
