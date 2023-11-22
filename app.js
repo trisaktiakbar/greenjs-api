@@ -12,9 +12,42 @@ app.use((req, res, next) => {
 });
 
 app.get("/weather", (req, res) => {
-  const feature = req.query.feature;
+  const feature_code = req.query.feature;
+  let feature;
+
+  switch (feature_code) {
+    case "Tn":
+      feature = "Suhu Minimum";
+      break;
+    case "Tx":
+      feature = "Suhu Maksimum";
+      break;
+    case "Tavg":
+      feature = "Suhu Rata-Rata";
+      break;
+    case "RH_avg":
+      feature = "Kelembaban Rata-Rata";
+      break;
+    case "RR":
+      feature = "Curah Hujan";
+      break;
+    case "ss":
+      feature = "Lama Penyinaran Matahari";
+      break;
+    default:
+      feature = undefined;
+      res.status(400).json({
+        error: {
+          code: 400,
+          message: "Parameter query tidak valid.",
+          details: "Parameter 'feature' tidak valid",
+        },
+      });
+  }
+
   res.json({
     feature,
+    feature_code,
     model: `https://greenjs.netlify.app/api/models/lstm/${feature}/model.json`,
   });
 });
