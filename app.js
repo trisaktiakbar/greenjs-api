@@ -86,7 +86,7 @@ app.get("/plant", (req, res) => {
 
         result.input_feature = result.input_feature.filter((_, index) => result.target[index] !== predictedLabel);
         result.target = result.target.filter((label) => label !== predictedLabel);
-      } while (result.length);
+      } while (result.input_feature.length);
 
       res.status(200).json({
         rekomendasi_tanaman: recommendation,
