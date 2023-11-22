@@ -65,19 +65,31 @@ app.get("/plant", (req, res) => {
       console.error(err);
       res.status(500).send("Terjadi kesalahan dari sisi server.");
     } else {
-      result = JSON.parse(result);
-      let X_train = result.input_feature;
-      let Y_train = result.target;
-
+      let recommendation = [];
       let input = [];
       input[0] = data.suhu; // suhu
       input[1] = data.kelembaban_udara; // Kelembaban Udara
       input[2] = data.ph_tanah; // pH Tanah
       input[3] = data.curah_hujan; // Curah Hujan
 
-      const predictedLabel = knnPredict(X_train, Y_train, input);
+      let predictedLabel;
+
+      result = JSON.parse(result);
+      let X_train, Y_train;
+
+      do {
+        X_train = result.input_feature;
+        Y_train = result.target;
+
+        predictedLabel = knnPredict(X_train, Y_train, input);
+        recommendation.push(predictedLabel);
+
+        result.input_feature = result.input_feature.filter((_, index) => result.target[index] !== predictedLabel);
+        result.target = result.target.filter((label) => label !== predictedLabel);
+      } while (result.length);
+
       res.status(200).json({
-        rekomendasi_tanaman: predictedLabel,
+        rekomendasi_tanaman: recommendation,
       });
     }
   });
