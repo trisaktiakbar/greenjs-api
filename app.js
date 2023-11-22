@@ -48,7 +48,7 @@ app.get("/weather", (req, res) => {
   res.json({
     feature,
     feature_code,
-    model: `https://greenjs.netlify.app/api/models/lstm/${feature}/model.json`,
+    model: `https://greenjs.netlify.app/api/models/lstm/${feature_code}/model.json`,
   });
 });
 
