@@ -52,9 +52,9 @@ app.get("/weather", (req, res) => {
   });
 });
 
-app.get("/", (req,res)) => {
-  return res.status(200).send("Hello World")
-}
+app.get("/", (req, res) => {
+  return res.status(200).send("Hello World");
+});
 
 app.get("/plant", (req, res) => {
   const filePath = "models/tanaman/knn-data.json";
