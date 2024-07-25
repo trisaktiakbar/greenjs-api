@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 const knnPredict = require("./models/tanaman/knn-predict.js");
+const { knnData } = require("./models/tanaman/knn-data.js");
 
 app.use(express.static("public"));
 
@@ -53,7 +54,6 @@ app.get("/weather", (req, res) => {
 });
 
 app.get("/plant", (req, res) => {
-  const filePath = "models/tanaman/knn-data.json";
   data = {
     suhu: req.query.suhu,
     kelembaban_udara: req.query.kelembaban_udara,
@@ -64,38 +64,31 @@ app.get("/plant", (req, res) => {
     return res.status(400).send("Bad Request: Query parameter data is missing");
   }
 
-  fs.readFile(filePath, "utf8", (err, result) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("Terjadi kesalahan dari sisi server.");
-    } else {
-      let recommendation = [];
-      let input = [];
-      input[0] = data.suhu; // suhu
-      input[1] = data.kelembaban_udara; // Kelembaban Udara
-      input[2] = data.ph_tanah; // pH Tanah
-      input[3] = data.curah_hujan; // Curah Hujan
+  let recommendation = [];
+  let input = [];
+  input[0] = data.suhu; // suhu
+  input[1] = data.kelembaban_udara; // Kelembaban Udara
+  input[2] = data.ph_tanah; // pH Tanah
+  input[3] = data.curah_hujan; // Curah Hujan
 
-      let predictedLabel;
+  let predictedLabel;
 
-      result = JSON.parse(result);
-      let X_train, Y_train;
+  result = knnData;
+  let X_train, Y_train;
 
-      do {
-        X_train = result.input_feature;
-        Y_train = result.target;
+  do {
+    X_train = result.input_feature;
+    Y_train = result.target;
 
-        predictedLabel = knnPredict(X_train, Y_train, input);
-        recommendation.push(predictedLabel);
+    predictedLabel = knnPredict(X_train, Y_train, input);
+    recommendation.push(predictedLabel);
 
-        result.input_feature = result.input_feature.filter((_, index) => result.target[index] !== predictedLabel);
-        result.target = result.target.filter((label) => label !== predictedLabel);
-      } while (result.input_feature.length != 0);
+    result.input_feature = result.input_feature.filter((_, index) => result.target[index] !== predictedLabel);
+    result.target = result.target.filter((label) => label !== predictedLabel);
+  } while (result.input_feature.length != 0);
 
-      res.status(200).json({
-        rekomendasi_tanaman: recommendation,
-      });
-    }
+  res.status(200).json({
+    rekomendasi_tanaman: recommendation,
   });
 });
 
