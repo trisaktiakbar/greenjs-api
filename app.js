@@ -6,7 +6,7 @@ const knnPredict = require("./models/tanaman/knn-predict.js");
 app.use(express.static("public"));
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Atau sesuaikan dengan domain Anda
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
@@ -52,17 +52,17 @@ app.get("/weather", (req, res) => {
   });
 });
 
-app.get("/", (req, res) => {
-  return res.status(200).send("Hello World");
-});
-
 app.get("/plant", (req, res) => {
   const filePath = "models/tanaman/knn-data.json";
-  data = req.query.data;
+  data = {
+    suhu: req.query.suhu,
+    kelembaban_udara: req.query.kelembaban_udara,
+    ph_tanah: req.query.ph_tanah,
+    curah_hujan: req.query.curah_hujan,
+  };
   if (!data) {
     return res.status(400).send("Bad Request: Query parameter data is missing");
   }
-  data = JSON.parse(data);
 
   fs.readFile(filePath, "utf8", (err, result) => {
     if (err) {
