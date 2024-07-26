@@ -12,6 +12,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", (req, res) => {
+  res.status(200).send("Hello World");
+});
+
 app.get("/weather", (req, res) => {
   const feature_code = req.query.feature;
   let feature;
@@ -60,9 +64,6 @@ app.get("/plant", (req, res) => {
     ph_tanah: req.query.ph_tanah,
     curah_hujan: req.query.curah_hujan,
   };
-  if (!data) {
-    return res.status(400).send("Bad Request: Query parameter data is missing");
-  }
 
   let recommendation = [];
   let input = [];
